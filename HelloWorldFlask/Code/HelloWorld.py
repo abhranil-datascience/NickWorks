@@ -25,7 +25,7 @@ class Hello(Resource):
     def post(self):
         data = request.get_json()     # status code
         name = data['name']
-        return {'message': 'Hello '+name}, 201
+        return {'message': 'Hello '+name}
 #################### adding the defined resources along with their corresponding urls #################
 api.add_resource(GetToken, '/getToken')
 api.add_resource(Hello, '/sayHello')
