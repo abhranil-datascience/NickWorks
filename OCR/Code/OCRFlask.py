@@ -1,7 +1,7 @@
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
 from flask_jwt_extended import JWTManager,create_access_token,jwt_required
-import os,random,datetime,fitz,cv2,io,sys,requests,string
+import os,random,datetime,fitz,io,sys,requests,string
 from PIL import Image
 from google.cloud import vision
 from google.cloud.vision import types
