@@ -7,6 +7,9 @@ from google.cloud import vision
 from google.cloud.vision import types
 from google.protobuf.json_format import MessageToDict
 import pandas as pd
+# Set Environment Variables
+#os.environ["JWT_SECRET_KEY"] = "tlKW9as63m4wnBg6nyIUImajmc2TpCOGI4nss"
+#os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/NickApps/NickWorks/OCR/Code/NickOCRProjectGoogleCredentials.json"
 # creating the flask app
 app = Flask(__name__)
 app.config['JWT_SECRET_KEY']=os.getenv('JWT_SECRET_KEY')
