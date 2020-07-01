@@ -1,6 +1,5 @@
 from flask import Flask, jsonify, request
 from flask_restful import Resource, Api
-from flask_jwt_extended import JWTManager,create_access_token,jwt_required
 import os,random,datetime,fitz,io,sys,requests,string
 from PIL import Image
 from google.cloud import vision
@@ -8,27 +7,17 @@ from google.cloud.vision import types
 from google.protobuf.json_format import MessageToDict
 import pandas as pd
 # Set Environment Variables
-#os.environ["JWT_SECRET_KEY"] = "tlKW9as63m4wnBg6nyIUImajmc2TpCOGI4nss"
 #os.environ["GOOGLE_APPLICATION_CREDENTIALS"] = "/home/NickApps/NickWorks/OCR/Code/NickOCRProjectGoogleCredentials.json"
 # creating the flask app
 app = Flask(__name__)
-app.config['JWT_SECRET_KEY']=os.getenv('JWT_SECRET_KEY')
 # creating an API object
 api = Api(app)
-jwt = JWTManager(app)
-
 # making a class for a particular resource
 # the get, post methods correspond to get and post requests
 # they are automatically mapped by flask_restful.
 # other methods include put, delete, etc.
-################################### Create Token ####################################################
-class GetToken(Resource):
-    def get(self):
-        expires = datetime.timedelta(seconds=2700)
-        return {'token':create_access_token(identity=str(random.randint(10000,99999)), expires_delta=expires)}
 ######### OCR using Google Vision API ##########
 class PerformOCRGVA(Resource):
-    @jwt_required
     def post(self):
         ################ Get File Name and Minimum Matches From Request ###############
         data = request.get_json()
@@ -265,7 +254,6 @@ class PerformOCRGVA(Resource):
                 PlaceOfBirth=PlaceOfBirth.join(PlaceOfBirthList)
             return {'message':'success','Surname':Surname,'GivenName':GivenName,'PlaceOfDeath':PlaceOfDeath,'DateOfDeath':DateOfDeath,'Occupation':Occupation,'Sex':Sex,'Age':Age,'DateOfBirth':DOB,'UsualAddress':UsualAddress,'PlaceOfBirth':PlaceOfBirth}
 #################### Configure URLs #########################
-api.add_resource(GetToken, '/getToken')
 api.add_resource(PerformOCRGVA,'/checkFileGVA')
 #################  Run Flask Server ##########################
 if __name__ == '__main__':
